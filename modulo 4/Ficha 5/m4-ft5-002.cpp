@@ -2,28 +2,32 @@
 #include <string>
 #include <locale>
 using namespace std;
-string texto = "era uma vez   um gato maltês  tocava piano e falava francês  ";
+string texto;
 
-int conta_palavras(string s)
+int conta_palavras6(string s)
 {
-    int pospalavra = -1, nsubs = 0;
+    int pos = -1, contador = 0;
+
+    // contar espacos
+
+    // se o primeiro caractere nao for espaco, e uma palavra
+    if (s[0] != ' ')
+        contador++;
+
     do
     {
-        pospalavra = s.find("  ", pospalavra + 1);
+        pos = s.find(" ", pos + 1);
+        // so contabiliza a palavra se nao for um espaco
+        if (pos != -1 && (pos + 1 < s.length() && s[pos + 1] != ' '))
+            contador++;
+    } while (pos != -1);
 
-        if (pospalavra != -1)
-        {
-            s = s.replace(pospalavra, 2, " ");
-            nsubs++;
-        }
-       
+    cout << "Quantidade de palavras: " << contador << endl;
 
-    } while (pospalavra != -1); 
-    cout << "Quantidade de palavras: " << nsubs << endl; 
-    return nsubs;
+    return contador;
 }
 
-void troca_duplo_espaco(string s)
+void troca_duplo_espaco5(string s)
 {
     int poscaracter = -1, nsubs = 0;
     do
@@ -39,7 +43,7 @@ void troca_duplo_espaco(string s)
     cout << s << endl;
 }
 
-void primeiras_maiusculas(string s)
+void primeiras_maiusculas4(string s)
 {
     s[0] = toupper(s[0]);
     int poscaracter = -1;
@@ -55,7 +59,7 @@ void primeiras_maiusculas(string s)
     cout << s << "\n\n";
 }
 
-int substitui(string s, char c1, char c2)
+int substitui3(string s, char c1, char c2)
 {
     int poscaracter = -1, nsubs = 0;
     do
@@ -74,7 +78,7 @@ int substitui(string s, char c1, char c2)
     return nsubs;
 }
 
-int conta_chars(string s, char c)
+int conta_chars2(string s, char c)
 {
     int poscaracter = -1, contarcaracter = 0;
     do
@@ -90,7 +94,7 @@ int conta_chars(string s, char c)
     return contarcaracter;
 }
 
-void mostra_palavras(string s)
+void mostra_palavras1(string s)
 {
     cout << "\n";
     for (int i = 0; i < s.length(); i++)
@@ -115,20 +119,21 @@ void menuprincipal()
     do
     {
         cout << texto << "\n\n";
-        puts("1 - Mostrar cada palavra em uma nova linha\n");
-        puts("2 - Contar caractere específico\n");
-        puts("3 - Substituir caractere\n");
-        puts("4 - Primeiras letras em maiusculas\n");
-        puts("5 - Trocar os duplos espaços\n");
-        puts("6 - Contar palavras\n");
-        cout << "\nInsira sua opcao: ";
+        puts("\n(1) - Mostrar cada palavra em uma nova linha\n");
+        puts("\n(2) - Contar caractere específico\n");
+        puts("\n(3) - Substituir caractere\n");
+        puts("\n(4) - Primeiras letras em maiusculas\n");
+        puts("\n(5) - Trocar os duplos espaços\n");
+        puts("\n(6) - Contar palavras\n");
+        puts("\n(0) - Para sair\n");
+        cout << "\nInsira sua opção: ";
         cin >> opcao;
         system("cls");
 
         switch (opcao)
         {
         case 1:
-            mostra_palavras(texto);
+            mostra_palavras1(texto);
             system("pause");
             system("cls");
 
@@ -137,7 +142,7 @@ void menuprincipal()
         case 2:
             cout << "Insira o caractere que deseja contar: " << endl;
             cin >> Cespecifico;
-            conta_chars(texto, Cespecifico);
+            conta_chars2(texto, Cespecifico);
             system("pause");
             system("cls");
 
@@ -148,7 +153,7 @@ void menuprincipal()
             cin >> L1;
             cout << "Insira a letra substituta: " << endl;
             cin >> L2;
-            Vezessubs = substitui(texto, L1, L2);
+            Vezessubs = substitui3(texto, L1, L2);
             cout << "Vezes substituídas: " << Vezessubs << endl;
             system("pause");
             system("cls");
@@ -156,22 +161,23 @@ void menuprincipal()
             break;
 
         case 4:
-            primeiras_maiusculas(texto);
+            primeiras_maiusculas4(texto);
             system("pause");
             system("cls");
 
             break;
 
         case 5:
-            troca_duplo_espaco(texto);
+            troca_duplo_espaco5(texto);
             system("pause");
             system("cls");
 
             break;
         case 6:
-        conta_palavras(texto);
-        system ("pause");
-        system ("cls");
+            conta_palavras6(texto);
+
+            system("pause");
+            system("cls");
 
             break;
         }
@@ -181,6 +187,9 @@ void menuprincipal()
 
 int main()
 {
+    cout << "Insira a frase que deseja: ";
+    getline(cin, texto);
+    system("cls");
     setlocale(LC_ALL, "pt_PT.utf8");
     menuprincipal();
 }

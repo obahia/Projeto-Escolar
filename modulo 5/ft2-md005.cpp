@@ -39,13 +39,14 @@ struct Cliente // struct do cliente
 };
 Cliente clientes[MAX_CLIENTE]{
     {1, "João Pinto", "j.pinto@gmail.com", 912352513},
-    {2, "Ana Sousa", "ana_sousa@gmail.com", 913357788},
-    {3, "Rita Santos", "rs@sapo.pt", 936789147},
+    {8, "Lucinda Sá", "lmss@hotmail.com", 934254713},
+    {7, "Teresa Silva", "tsmp@gmail.com", 912785423},
     {4, "Rui Lopes", "ruislopes@hotmail.com", 923852456},
     {5, "Carlos Torres", "carlosmt@ctt.com", 967258456},
     {6, "Miguel Castro", "migas@sapo.pt", 968124637},
-    {7, "Teresa Silva", "tsmp@gmail.com", 912785423},
-    {8, "Lucinda Sá", "lmss@hotmail.com", 934254713}};
+    {3, "Rita Santos", "rs@sapo.pt", 936789147},
+    {2, "Ana Sousa", "ana_sousa@gmail.com", 913357788},
+};
 
 int menu_principal() // menu principal
 {
@@ -102,19 +103,18 @@ int menu_clientes() // menu dos clientes
 int mostrar_cliente(int id) // mostrar cliente de acordo com o ID 3
 {
 
-    if (id < N_cliente + 1)
+    for (int i = 0; i < N_cliente; i++)
     {
-        id--;
-        cout << "(" << id + 1 << ")"
-             << " " << clientes[id].nome << " " << clientes[id].email << " " << clientes[id].tlm << "\n\n";
+        if (clientes[i].idCliente == id)
+        {
 
-        return 1;
+            cout << "(" << id << ")"
+                 << " " << clientes[i].nome << " " << clientes[i].email << " " << clientes[i].tlm << "\n\n";
+
+            return 1;
+        }
     }
-    else
-    {
-        cout << "ID não encontrado!";
-        return 0;
-    }
+    return 0;
 }
 
 void mostrar_todos_clientes() // função para mostrar todos os clientes
@@ -217,29 +217,95 @@ int automovel_telefone(int tel) // mostrar automovel de acordo com o telemovel d
         if (tel == clientes[i].tlm)
         {
             mostrar_automovel(clientes[i].idCliente);
-            system ("pause");
+            system("pause");
             return 1;
         }
     }
     return 0;
 }
 
-int matricula_ano(int ano)
+int matricula_ano_anterior(int ano)
 {
+    int Ncarros = 0;
+    for (int i = 0; i < N_auto; i++)
+    {
+        if (automoveis[i].ano <= ano)
+        {
+            cout << "(" << automoveis[i].idAuto << ") " << automoveis[i].marca << ", " << automoveis[i].modelo << ", " << automoveis[i].ano << ", " << automoveis[i].num_chassi << "\n\n";
 
+            Ncarros++;
+        }
+    }
+    if (Ncarros)
+    {
+        cout << "Possuí " << Ncarros << " carro(s)\n\n";
+        return 1;
+    }
+    else
+    {
+        cout << "NÃO POSSUÍ AUTOMOVEIS !\n\n";
+    }
+
+    return 0;
+}
+
+int matricula_ano_posterior(int anoP)
+
+{
+    int Ncarros = 0;
+    for (int i = 0; i < N_auto; i++)
+    {
+        if (automoveis[i].ano >= anoP)
+        {
+
+            cout << "(" << automoveis[i].idAuto << ") " << automoveis[i].marca << ", " << automoveis[i].modelo << ", " << automoveis[i].ano << ", " << automoveis[i].num_chassi << "\n\n";
+            Ncarros++;
+        }
+    }
+    if (Ncarros)
+    {
+        cout << "Possuí " << Ncarros << " carro(s)\n\n";
+        return 1;
+    }
+    else
+    {
+        cout << "NÃO POSSUÍ AUTOMOVEIS !\n\n";
+    }
+
+    return 0;
+}
+
+void mostrar_auto_chassi()
+{
+    string chassi;
+    cout << "Insira o número de chassi: ";
+    cin.ignore();
+    getline(cin, chassi);
+    cout << "\n";
+
+    for (int i = 0; i < N_auto; i++)
+    {
+        if (chassi.compare(automoveis[i].num_chassi) == 0)
+        {
+            cout << "(" << automoveis[i].idAuto << ") " << automoveis[i].marca << ", " << automoveis[i].modelo << ", " << automoveis[i].ano << ", " << automoveis[i].num_chassi << "\n\n";
+        }
+    }
 }
 
 int menu_pesquisar() // menu pesquisar
 {
     system("cls");
     int OpP;
-    cout << "\n\n========MENU PESQUISAR========\n\n";
-    cout << "1 - Mostre os automóveis do cliente com um determinado telemóvel\n";
-    cout << "2 - Mostre os automóveis com matrícula igual ou anterior a um dado ano\n";
-    cout << "3 - Mostre os automóveis com matrícula igual ou posterior a um dado ano\n";
-    cout << "4 - Mostre o automóvel com um certo número de chassi\n";
+    cout << "\n\n=========================MENU PESQUISAR==========================\n\n";
+    cout << "1 - Mostre os automóveis do cliente com um determinado telemóvel\n\n";
+
+    cout << "2 - Mostre os automóveis com matrícula igual ou anterior a um dado ano\n\n";
+
+    cout << "3 - Mostre os automóveis com matrícula igual ou posterior a um dado ano\n\n";
+
+    cout << "4 - Mostre o automóvel com um certo número de chassi\n\n";
     cout << "\n0 - Sair";
-    cout << "\n\n===================================\n\n";
+    cout << "\n\n==================================================================\n\n";
     cout << "Opção: ";
     cin >> OpP;
     return OpP;
@@ -249,11 +315,11 @@ int main()
 {
     setlocale(LC_ALL, "pt_PT.utf8");
 
-    int opcao, opcao_cliente, opcao_pesquisar, opcao_automovel, resul, Idcliente, resulA, IDauto, tlm, ANO;
-
+    int opcao, opcao_cliente, opcao_pesquisar, opcao_automovel, resul, Idcliente, resulA, IDauto, tlm, ANO, ANOPOSTERIOR;
+    string chassi;
     do
     {
-        opcao = menu_principal(); //menu cliente
+        opcao = menu_principal(); // menu cliente
         switch (opcao)
         {
         case 1:
@@ -296,15 +362,14 @@ int main()
                 }
 
             } while (opcao_cliente != 0);
-            system("cls"); 
-
-
+            system("cls");
 
             break;
         case 2:
-            system("cls"); //menu automoveis
+            system("cls"); // menu automoveis
             do
             {
+
                 opcao_automovel = menu_automoveis();
                 switch (opcao_automovel)
                 {
@@ -341,9 +406,8 @@ int main()
             } while (opcao_automovel != 0);
             system("cls");
 
-
             break;
-        case 3: //menu pesquisar
+        case 3: // menu pesquisar
             do
             {
                 opcao_pesquisar = menu_pesquisar();
@@ -359,10 +423,23 @@ int main()
                 case 2:
                     system("cls");
                     cout << "Insira o ano: ";
-                    cin >> ANO;  
+                    cin >> ANO;
                     cout << "\n";
-                    matricula_ano(ANO);
-                    break;  
+                    matricula_ano_anterior(ANO);
+                    system("pause");
+                    break;
+                case 3:
+                    system("cls");
+                    cout << "Insira o ano: ";
+                    cin >> ANOPOSTERIOR;
+                    cout << "\n";
+                    matricula_ano_posterior(ANOPOSTERIOR);
+                    system("pause");
+                    break;
+                case 4:
+                    system("cls");
+                    mostrar_auto_chassi();
+                    system("pause");
 
                 default:
                     break;
